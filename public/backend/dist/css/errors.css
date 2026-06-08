@@ -1,0 +1,504 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', 'SF Mono', 'Fira Code', monospace;
+    background: #0a0a0f;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Grid futurista */
+body::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(40px); }
+}
+
+.error-container {
+    max-width: 550px;
+    width: 100%;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.1);
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+    animation: glitchIn 0.5s ease-out;
+}
+
+@keyframes glitchIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+        filter: blur(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+.error-header {
+    padding: 35px 20px;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.error-header.error-404 { background: linear-gradient(135deg, #0a0a1a, #0f0f2a); }
+.error-header.error-403 { background: linear-gradient(135deg, #1a0a1a, #2a0f2a); }
+.error-header.error-419 { background: linear-gradient(135deg, #0a1a0a, #0f2a0f); }
+.error-header.error-500 { background: linear-gradient(135deg, #1a0a0a, #2a0f0f); }
+
+.animation-container {
+    position: relative;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Efecto glitch para números */
+.error-code {
+    font-size: 90px;
+    font-weight: 800;
+    color: #0ff;
+    text-shadow: 
+        3px 3px 0 #f0f,
+        -3px -3px 0 #0ff;
+    letter-spacing: 10px;
+    font-family: monospace;
+    position: relative;
+    animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+    0%, 100% { transform: skew(0deg, 0deg); opacity: 1; }
+    95% { transform: skew(0deg, 0deg); opacity: 1; }
+    96% { transform: skew(5deg, 2deg); opacity: 0.8; }
+    97% { transform: skew(-3deg, -1deg); opacity: 0.9; }
+    98% { transform: skew(0deg, 0deg); opacity: 1; }
+}
+
+/* Excepción */
+.exception-type {
+    font-family: monospace;
+    font-size: 12px;
+    color: rgba(0, 255, 255, 0.6);
+    letter-spacing: 2px;
+    margin-top: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* Líneas de código animadas */
+.code-line {
+    font-family: monospace;
+    font-size: 12px;
+    color: #0ff;
+    opacity: 0.7;
+    margin: 8px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #0ff;
+    width: 0;
+    animation: typing 2s steps(30, end) forwards;
+}
+
+.code-line:nth-child(1) { animation-delay: 0s; }
+.code-line:nth-child(2) { animation-delay: 0.3s; }
+.code-line:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* Scan line */
+.scan-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0ff, transparent);
+    animation: scan 2s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    0% { bottom: 0; opacity: 0; }
+    50% { bottom: 100%; opacity: 1; }
+    100% { bottom: 0; opacity: 0; }
+}
+
+/* Datos binarios */
+.binary-bg {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-family: monospace;
+    font-size: 10px;
+    color: #0ff;
+    opacity: 0.25;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.error-body {
+    padding: 30px 25px;
+    text-align: center;
+}
+
+.error-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #0ff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-family: monospace;
+}
+
+.error-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: transparent;
+    border: 1px solid #0ff;
+    color: #0ff;
+    border-radius: 30px;
+    font-weight: 400;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-family: monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: rgba(0, 255, 255, 0.08);
+}
+
+.btn-primary:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    border-color: #f0f;
+    color: #f0f;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 0, 255, 0.1);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.help-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 255, 255, 0.15);
+}
+
+.help-links a {
+    color: rgba(0, 255, 255, 0.5);
+    text-decoration: none;
+    font-size: 11px;
+    font-family: monospace;
+    transition: color 0.3s;
+}
+
+.help-links a:hover {
+    color: #0ff;
+}
+
+.footer {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 12px;
+    font-size: 10px;
+    color: rgba(0, 255, 255, 0.4);
+    text-align: center;
+    font-family: monospace;
+    border-top: 1px solid rgba(0, 255, 255, 0.15);
+}
+
+/* ========== ELEMENTOS FUTURISTAS ========== */
+
+/* UFO */
+.ufo {
+    position: relative;
+    width: 100px;
+    height: 45px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.ufo-body {
+    position: absolute;
+    width: 85px;
+    height: 25px;
+    background: linear-gradient(135deg, #555, #888);
+    border-radius: 50% 50% 30% 30%;
+    top: 8px;
+    left: 8px;
+    box-shadow: 0 0 20px #0ff;
+    border: 1px solid #0ff;
+}
+
+.ufo-dome {
+    position: absolute;
+    width: 35px;
+    height: 22px;
+    background: #0ff;
+    border-radius: 50% 50% 40% 40%;
+    top: -5px;
+    left: 33px;
+    opacity: 0.8;
+    box-shadow: 0 0 15px #0ff;
+}
+
+.ufo-light {
+    position: absolute;
+    width: 4px;
+    height: 12px;
+    background: #0ff;
+    border-radius: 50%;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: beam 0.8s infinite;
+    box-shadow: 0 0 10px #0ff;
+}
+
+@keyframes beam {
+    0%, 100% { opacity: 0.3; height: 12px; }
+    50% { opacity: 1; height: 22px; }
+}
+
+/* Vaca */
+.cow {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    animation: float 2.5s ease-in-out infinite;
+}
+
+.cow-body {
+    width: 55px;
+    height: 35px;
+    background: #aaa;
+    border-radius: 50%;
+    position: relative;
+    border: 1px solid #0ff;
+}
+
+.cow-head {
+    position: absolute;
+    width: 22px;
+    height: 18px;
+    background: #aaa;
+    border-radius: 50%;
+    right: -10px;
+    top: 4px;
+    border: 1px solid #0ff;
+}
+
+.cow-eye {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #0ff;
+    border-radius: 50%;
+    top: 5px;
+    right: 5px;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Tractor */
+.tractor {
+    position: relative;
+    width: 90px;
+    height: 50px;
+    animation: drive 3s ease-in-out infinite;
+}
+
+@keyframes drive {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
+}
+
+.tractor-body {
+    position: absolute;
+    width: 45px;
+    height: 25px;
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    border: 1px solid #ff4444;
+    border-radius: 8px;
+    top: 12px;
+    left: 18px;
+}
+
+.tractor-wheel {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #222;
+    border-radius: 50%;
+    border: 1px solid #ff4444;
+    bottom: -6px;
+}
+.wheel-1 { left: 12px; }
+.wheel-2 { right: 12px; }
+
+.tractor-exhaust {
+    position: absolute;
+    width: 4px;
+    height: 15px;
+    background: #555;
+    top: 0px;
+    right: 14px;
+}
+
+.smoke {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #aaa;
+    border-radius: 50%;
+    top: -6px;
+    right: 16px;
+    animation: smoke 0.8s infinite;
+}
+
+@keyframes smoke {
+    0% { opacity: 0; transform: translateY(0); }
+    50% { opacity: 0.6; transform: translateY(-8px); }
+    100% { opacity: 0; transform: translateY(-16px); }
+}
+
+/* Reloj */
+.clock {
+    position: relative;
+    width: 65px;
+    height: 65px;
+    border: 2px solid #ff9800;
+    border-radius: 50%;
+    animation: spin 3s linear infinite;
+}
+
+.clock-hand {
+    position: absolute;
+    width: 2px;
+    height: 25px;
+    background: #ff9800;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom;
+    transform: translateX(-50%) rotate(0deg);
+}
+.hand-1 { animation: tick 1s linear infinite; }
+.hand-2 { animation: tick 2s linear infinite; height: 18px; }
+
+@keyframes tick {
+    from { transform: translateX(-50%) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(360deg); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Explosión */
+.explosion {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.explosion-particle {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: #ff6600;
+    border-radius: 50%;
+    animation: explode 1s ease-out infinite;
+}
+
+@keyframes explode {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(4); opacity: 0; }
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 2px solid #ff4444;
+    border-radius: 50%;
+    animation: pulseRing 1.5s ease-out infinite;
+}
+
+@keyframes pulseRing {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .error-code { font-size: 55px; letter-spacing: 5px; }
+    .error-title { font-size: 14px; }
+    .btn { padding: 6px 14px; font-size: 10px; }
+    .animation-container { height: 130px; }
+    .code-line { font-size: 9px; white-space: normal; word-break: break-word; }
+    .exception-type { font-size: 9px; }
+}

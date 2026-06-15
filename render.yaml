@@ -25,4 +25,5 @@ services:
       - key: DB_USERNAME
         value: (proyecto)
       - key: DB_PASSWORD
+    
         value: (l0hfiWVSgTW8EfabRyTtD9L8HtB6fPoi5)

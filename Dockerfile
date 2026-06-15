@@ -25,20 +25,26 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Copiar archivos de Composer primero (para cachear)
+# Copiar archivos de Composer primero
 COPY composer.json composer.lock ./
 
-# Instalar dependencias
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Instalar dependencias (skip-scripts para evitar artisan)
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Copiar el resto del código
 COPY . .
+
+# Ejecutar scripts después de tener todo el código
+RUN composer run-script post-autoload-dump
 
 # Permisos
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Limpiar caché
-RUN php artisan config:clear && php artisan cache:clear
+# Crear archivo .env temporal si no existe
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
+# Generar key
+RUN php artisan key:generate --no-interaction
 
 EXPOSE 80

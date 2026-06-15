@@ -21,8 +21,8 @@ services:
       - key: DB_PORT
         value: 5432
       - key: DB_DATABASE
-        value: (el nombre de tu base de datos)
+        value: (proyecto_iqxu)
       - key: DB_USERNAME
-        value: (el usuario de tu base de datos)
+        value: (proyecto)
       - key: DB_PASSWORD
-        value: (la contraseña de tu base de datos)
+        value: (l0hfiWVSgTW8EfabRyTtD9L8HtB6fPoi5)

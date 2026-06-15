@@ -3,10 +3,26 @@ services:
     name: proyecto-laravel
     runtime: php
     rootDir: public
-    buildCommand: composer install --no-dev --optimize-autoloader
+    buildCommand: composer install --no-dev --optimize-autoloader && php artisan optimize
     startCommand: php artisan serve --host=0.0.0.0 --port=10000
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: false
+      - key: APP_URL
+        value: https://proyecto-laravel-1xp1.onrender.com
+      - key: APP_KEY
+        value: base64:WujOUs9SLrmKX31fEZ0kQXZBnb9KpUH4wOWXTLClHGw=
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        value: (el host de tu base de datos en Render)
+      - key: DB_PORT
+        value: 5432
+      - key: DB_DATABASE
+        value: (el nombre de tu base de datos)
+      - key: DB_USERNAME
+        value: (el usuario de tu base de datos)
+      - key: DB_PASSWORD
+        value: (la contraseña de tu base de datos)

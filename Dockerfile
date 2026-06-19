@@ -35,6 +35,10 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-script
 # Instalar dependencias de Node y compilar assets
 RUN cd /var/www/html && npm install && npm run build
 
+# ✅ Crear carpeta para imágenes y dar permisos
+RUN mkdir -p /var/www/html/public/img/clientes
+RUN chmod -R 777 /var/www/html/public/img/clientes
+
 # Permisos
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache

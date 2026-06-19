@@ -30,14 +30,7 @@ class ClienteController extends Controller
         if ($request->hasFile('imagen')) {
             $imagen = $request->file('imagen');
             $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-            
-            // Crear carpeta si no existe
-            $carpeta = public_path('img/clientes');
-            if (!file_exists($carpeta)) {
-                mkdir($carpeta, 0777, true);
-            }
-            
-            $imagen->move($carpeta, $nombreImagen);
+            $imagen->move(public_path('img/clientes'), $nombreImagen);
             $validatedData['imagen'] = 'img/clientes/' . $nombreImagen;
         }
         
@@ -80,14 +73,7 @@ class ClienteController extends Controller
             
             $imagen = $request->file('imagen');
             $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-            
-            // Crear carpeta si no existe
-            $carpeta = public_path('img/clientes');
-            if (!file_exists($carpeta)) {
-                mkdir($carpeta, 0777, true);
-            }
-            
-            $imagen->move($carpeta, $nombreImagen);
+            $imagen->move(public_path('img/clientes'), $nombreImagen);
             $validatedData['imagen'] = 'img/clientes/' . $nombreImagen;
         }
         

@@ -24,30 +24,37 @@ class ClienteController extends Controller
     }
 
     public function store(StoreClienteRequest $request)
-    {
-        $validatedData = $request->validated();
+{
+    $validatedData = $request->validated();
+    
+    // Verificar si hay imagen
+    if ($request->hasFile('imagen') && $request->file('imagen')->isValid()) {
+        $imagen = $request->file('imagen');
+        $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
         
-        if ($request->hasFile('imagen')) {
-            $imagen = $request->file('imagen');
-            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-            $imagen->move(public_path('img/clientes'), $nombreImagen);
-            $validatedData['imagen'] = 'img/clientes/' . $nombreImagen;
-        }
+        // Usar storage en lugar de public
+        $imagen->storeAs('public/img/clientes', $nombreImagen);
+        $validatedData['imagen'] = '/storage/img/clientes/' . $nombreImagen;
         
-        Cliente::create([
-            'nombre' => $validatedData['nombre'],
-            'documento' => $validatedData['documento'],
-            'direccion' => $validatedData['direccion'],
-            'telefono' => $validatedData['telefono'],
-            'email' => $validatedData['email'],
-            'imagen' => $validatedData['imagen'] ?? null,
-            'estado' => '1',
-            'registradopor' => auth()->id(),
-        ]);
-
-        return redirect()->route('clientes.index')
-            ->with('success', 'Cliente creado correctamente');
+        // Si quieres usar public_path:
+        // $imagen->move(public_path('img/clientes'), $nombreImagen);
+        // $validatedData['imagen'] = 'img/clientes/' . $nombreImagen;
     }
+    
+    Cliente::create([
+        'nombre' => $validatedData['nombre'],
+        'documento' => $validatedData['documento'],
+        'direccion' => $validatedData['direccion'],
+        'telefono' => $validatedData['telefono'],
+        'email' => $validatedData['email'],
+        'imagen' => $validatedData['imagen'] ?? null,
+        'estado' => '1',
+        'registradopor' => auth()->id(),
+    ]);
+
+    return redirect()->route('clientes.index')
+        ->with('success', 'Cliente creado correctamente');
+}
 
     public function show($id)
     {
